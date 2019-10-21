@@ -1,0 +1,1 @@
+const heroi = angular.module("heroi", ["ngMessages"]);

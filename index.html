@@ -1,0 +1,167 @@
+<html ng-app="heroi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Herois</title>
+    <link rel="stylesheet" type="text/css" href="app/lib/bootstrap/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="app/css/app.css">
+    <script src="app/lib/angular/angular.js"></script>
+    <script src="app/lib/angular/angular-messages.js"></script>
+    <script src="app/js/app.js"></script>
+    <script src="app/js/services/heroisService.js"></script>
+    <script src="app/js/controllers/heroiCtrl.js"></script>
+</head>
+
+<body ng-controller="heroiCtrl as vm" ng-init="vm.init()">
+    <div class="bgimg-1">
+        <h3 class="jumbotronTitle">{{vm.app}}</h3>
+        <div ng-if="vm.login" class="jumbotron">
+            <h4 ng-if="vm.login" class="jumbotronTitle">{{vm.message.mensagem}}</h4>
+            <form>
+                <div>
+                    <h3>Login</h3>
+                    <input type="texto" class="form-control" ng-model="vm.user.nickname" placeholder="Digite seu nickname" required>
+                </div>
+                <div>
+                    <h3>Senha</h3>
+                    <input type="password" class="form-control" ng-model="vm.user.senha" placeholder="Digite sua senha" required>
+                </div>
+                <button class="btn btn-success justify-content-center" ng-click="vm.autenticar()">Entrar</button>
+                <button class="btn btn-primary" ng-click="vm.irCadastrar()">Cadastrar</button>
+            </form>
+        </div>
+        <div ng-if="vm.cadastrar" class="jumbotron">
+            <h4 ng-if="vm.cadastrar" class="jumbotronTitle">{{vm.message.mensagem}}</h4>
+            <form>
+                <div class="form-group ">
+                    <h3><label>Login</label></h3>
+                    <input type="texto" class="form-control" placeholder="Escolha um nickname" ng-model="vm.user.nickname">
+                </div>
+                <div class="form-group">
+                    <h3><label>Senha</label></h3>
+                    <input type="password" class="form-control" ng-model="vm.user.senha" placeholder="Digite uma senha">
+                </div>
+                <div class="form-group">
+                    <h3><label>Herói</label></h3>
+                    <select name="heroi" id="heroi" class="form-control" ng-options="heroi as heroi.nome for heroi in vm.herois" ng-model="vm.user.heroi"></select>
+                    <div ng-if="vm.user.heroi">
+                        <span>Vida:{{vm.user.heroi.vida}}</span><br>
+                        <span>Ataque:{{vm.user.heroi.ataque}}</span><br>
+                        <span>Forca:{{vm.user.heroi.forca}}</span><br>
+                        <span>Inteligencia:{{vm.user.heroi.inteligencia}}</span><br>
+                        <span>Defesa:{{vm.user.heroi.defesa}}</span><br>
+                        <span>Velocidade:{{vm.user.heroi.velocidade}}</span><br>
+                        <span>Poder:{{vm.user.heroi.poder}}</span><br>
+                        <span>id:{{vm.user.heroi.id}}</span><br>
+                    </div>
+                </div>
+                <button class="btn btn-success" ng-click="vm.cadastrarJogador()" ng-disabled="!vm.user.heroi.id">Cadastrar</button>
+                <button ng-click="vm.irLogin()" class="btn btn-primary">Voltar</button>
+            </form>
+        </div>
+
+        <div ng-if="vm.escolherModo" class="jumbotron">
+            <h1 class="classic">{{vm.user.nickname.toUpperCase()}}, bem vindo(a) a arena</h1>
+            <div class="container">
+                <div class="row">
+                    <div>
+                        <button class="btn btn-dark" ng-click="vm.irJogarSingle()">Batalha Solo</button>
+                        <button class="btn btn-dark" ng-click="vm.irJogarMult()">Lute com um adversário</button>
+                    </div>
+                </div>
+                <div><button class="btn btn-success col-12 mt-5" ng-click="vm.irLogin()">Voltar</button> </div>
+            </div>
+        </div>
+
+        <div ng-if="vm.jogarSingle" class="jumbotron">
+            <h3 class="classic mb-5">Batalha Solo</h3>
+            <div class="container">
+
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{vm.user.nickname}} </h5>
+                        <h5 class="card-title">{{vm.user.personagem.nome}} </h5>
+                        <span>Vida:{{vm.user.personagem.poder}}</span><br>
+                        <span>Ataque:{{vm.user.personagem.ataque}}</span><br>
+                        <span>Forca:{{vm.user.personagem.forca}}</span><br>
+                        <span>Inteligencia:{{vm.personagem.heroi.inteligencia}}</span><br>
+                        <span>Defesa:{{vm.user.personagem.defesa}}</span><br>
+                        <span>Velocidade:{{vm.user.personagem.velocidade}}</span><br>
+                        <span>Poder:{{vm.user.personagem.vida}}</span><br>
+                    </div>
+                </div>
+                <hr>
+                <div><button class="btn btn-success col-12" ng-click="vm.modoJogo()">Voltar</button> </div>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-danger col-12" ng-click="vm.batalhaSingle()">BATALHA</button>
+                <div>
+                    <button class="btn btn-primary col-12 mt-2" ng-click="vm.irJogarSingle()" ng-if="vm.resultSingle">Limpar log de sangue</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="jumbotron" ng-if="vm.resultSingle">
+            {{vm.resultado}}
+        </div>
+
+        <div ng-if="vm.jogarMult">
+            <h3 class=" classic ">Batalha MultiPlayer</h3>
+            <div class="container">
+                <div class="row">
+                    <h4>Escolha seu adversário</h4>
+                    <select name="jogador" id="jogador" class="form-control col-12" ng-options="jogadores as jogadores.nickname for jogadores in vm.jogadores" ng-model="vm.user.jogador"></select>
+                    <div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="card" style="width: 18rem;">
+                            <img class="card-img-top">
+                            <div class="card-body">
+                                <h4>{{vm.user.nickname}}</h4>
+                                <h5 class="card-title">{{vm.user.personagem.nome}} </h5>
+                                <span>Poder:{{vm.user.personagem.poder}}</span><br>
+                                <span>Ataque:{{vm.user.personagem.ataque}}</span><br>
+                                <span>Forca:{{vm.user.personagem.forca}}</span><br>
+                                <span>Inteligencia:{{vm.personagem.heroi.inteligencia}}</span><br>
+                                <span>Defesa:{{vm.user.personagem.defesa}}</span><br>
+                                <span>Velocidade:{{vm.user.personagem.velocidade}}</span><br>
+                                <span>Vida:{{vm.user.personagem.vida}}</span><br>
+                            </div>
+                        </div>
+                        <div class="card" style="width: 18rem;" ng-show="vm.user.jogador.personagem.nome">
+                            <div class="card-body">
+                                <h4>{{vm.user.jogador.nickname}}</h4>
+                                <h5 class="card-title">{{vm.user.jogador.personagem.nome}} </h5>
+                                <span>Poder:{{vm.user.jogador.personagem.poder}}</span><br>
+                                <span>Ataque:{{vm.user.jogador.personagem.ataque}}</span><br>
+                                <span>Forca:{{vm.user.jogador.personagem.forca}}</span><br>
+                                <span>Inteligencia:{{vm.user.jogador.personagem.inteligencia}}</span><br>
+                                <span>Defesa:{{vm.user.jogador.personagem.defesa}}</span><br>
+                                <span>Velocidade:{{vm.user.jogador.personagem.velocidade}}</span><br>
+                                <span>Vida:{{vm.user.jogador.personagem.vida}}</span><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div><button class="btn btn-success col-12" ng-click="vm.modoJogo()"> Voltar </button> </div>
+                <div>
+                    <button class="btn btn-danger col-12 mt-2" ng-click="vm.batalhar()" ng-disabled="!vm.user.jogador.nickname">BATALHA</button>
+                    <div>
+                        <button class="btn btn-primary col-12 mt-2" ng-click="vm.irJogarMult()" ng-if="vm.resultMult">Limpar log de sangue</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="jumbotron" ng-if="vm.resultMult">
+                    {{vm.resultado}}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

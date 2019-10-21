@@ -1,0 +1,46 @@
+.jumbotron {
+    width: 600px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.jumbotronTitle {
+    width: 600px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.bgimg-1 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("https://img.elo7.com.br/product/main/14A5A88/adesivo-azulejo-herois-mod-443-adesivo-mulher-maravilha.jpg");
+    min-height: 100%;
+}
+
+h3 {
+    margin-bottom: 30px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.form-control {
+    margin-bottom: 5px;
+}
+
+.selecionado {
+    background-color: yellow;
+}
+
+.negrito {
+    font-weight: bold;
+}
+
+hr {
+    border-color: #999;
+}
